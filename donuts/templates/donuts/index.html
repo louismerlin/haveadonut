@@ -1,11 +1,57 @@
 {% load staticfiles %}
 <link rel="stylesheet" type="text/css" href="{% static 'donuts/style.css' %}" />
-{% if latest_donut_list %}
-    <ul>
-    {% for donut in latest_donut_list %}
-        <li><a href="{% url 'detail' donut.id %}">{{ donut.donut_text }}</a></li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No donuts are available.</p>
-{% endif %}
+<link rel="stylesheet" type="text/css" href="{% static 'donuts/bootstrap.min.css' %}" />
+<script src="{% static 'donuts/jquery.min.js' %}"></script>
+<script src="{% static 'donuts/bootstrap.min.js' %}"></script>
+
+
+<div class="container">
+
+  <div class="row">
+    <div class="col-xs-12 col-md-8">
+      <div class="page-header">
+        <h1>Classement :</h1>
+      </div>
+      {% if best_user_list %}
+      <div class="list-group">
+        <a class="list-group-item">
+          <h1 class="list-group-item-heading">Donut d'or : {{ best_user_list.0.first_name }} avec {{ best_user_list.0.donut_set.all.count }} donuts</h1>
+          {% for donut in best_user_list.0.donut_set.all %}
+          <img src="{% static 'donuts/images/donut.svg' %}" width="25"></img>
+          {% endfor %}
+        </a>
+        <a class="list-group-item">
+          <h2 class="list-group-item-heading">Donut d'argent : {{ best_user_list.1.first_name }} avec {{ best_user_list.1.donut_set.all.count }} donuts</h2>
+          {% for donut in best_user_list.1.donut_set.all %}
+          <img src="{% static 'donuts/images/donut.svg' %}" width="25"></img>
+          {% endfor %}
+        </a>
+        <a class="list-group-item">
+          <h3 class="list-group-item-heading">Donut de bronze : {{ best_user_list.2.first_name }} avec {{ best_user_list.2.donut_set.all.count }} donuts</h3>
+          {% for donut in best_user_list.2.donut_set.all %}
+          <img src="{% static 'donuts/images/donut.svg' %}" width="25"></img>
+          {% endfor %}
+        </a>
+      </div>
+      {% endif %}
+    </div>
+    <div class="col-xs-6 col-md-4">
+      <div class="page-header">
+        <h1>Derniers donuts :</h1>
+      </div>
+      {% if latest_donut_list %}
+      <ul class="list-group">
+        {% for donut in latest_donut_list %}
+        <li class="list-group-item">
+          <span class="label label-default">{{ donut.pub_date|date:"d / m / Y" }}</span>
+          {{ donut.user.first_name }} ({{ donut.user.donut_set.all.count}}) - {{ donut.donut_text }}
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p>Pas de nouveaux donuts...</p>
+      {% endif %}
+    </div>
+  </div>
+
+</div>
