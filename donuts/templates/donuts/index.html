@@ -1,0 +1,11 @@
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'donuts/style.css' %}" />
+{% if latest_donut_list %}
+    <ul>
+    {% for donut in latest_donut_list %}
+        <li><a href="{% url 'detail' donut.id %}">{{ donut.donut_text }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No donuts are available.</p>
+{% endif %}
