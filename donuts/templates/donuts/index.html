@@ -1,4 +1,5 @@
-{% load staticfiles %}
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"> {% load staticfiles %}
 <link rel="stylesheet" type="text/css" href="{% static 'donuts/style.css' %}" />
 <link rel="stylesheet" type="text/css" href="{% static 'donuts/bootstrap.min.css' %}" />
 <script src="{% static 'donuts/jquery.min.js' %}"></script>
@@ -6,52 +7,59 @@
 
 
 <div class="container">
-  <div class="page-header center" style="text-align:center"><h1>Here... have a donut!</h1></div>
+  <div class="page-header center" style="text-align:center">
+    <h1>Here... have a donut!</h1>
+  </div>
   <div class="row">
     <div class="col-xs-12 col-md-8">
-      <div class="page-header">
-        <h1>Classement :</h1>
-      </div>
       {% if best_user_list %}
       <div class="list-group">
-        <a class="list-group-item">
-          <h1 class="list-group-item-heading">Donut d'or : {{ best_user_list.0.first_name }} avec {{ best_user_list.0.donut_set.all.count }} donuts</h1>
+        <div class="list-group-item">
+          <h2 class="list-group-item-heading">Donut d'or : {{ best_user_list.0.first_name }} avec {{ best_user_list.0.donut_set.all.count }} donuts</h2>
           {% for donut in best_user_list.0.donut_set.all %}
           <img src="{% static 'donuts/images/donut.svg' %}" width="25"></img>
           {% endfor %}
-        </a>
-        <a class="list-group-item">
-          <h2 class="list-group-item-heading">Donut d'argent : {{ best_user_list.1.first_name }} avec {{ best_user_list.1.donut_set.all.count }} donuts</h2>
+        </div>
+        <div class="list-group-item">
+          <h3 class="list-group-item-heading">Donut d'argent : {{ best_user_list.1.first_name }} avec {{ best_user_list.1.donut_set.all.count }} donuts</h3>
           {% for donut in best_user_list.1.donut_set.all %}
           <img src="{% static 'donuts/images/donut.svg' %}" width="25"></img>
           {% endfor %}
-        </a>
-        <a class="list-group-item">
-          <h3 class="list-group-item-heading">Donut de bronze : {{ best_user_list.2.first_name }} avec {{ best_user_list.2.donut_set.all.count }} donuts</h3>
+        </div>
+        <div class="list-group-item">
+          <h4 class="list-group-item-heading">Donut de bronze : {{ best_user_list.2.first_name }} avec {{ best_user_list.2.donut_set.all.count }} donuts</h4>
           {% for donut in best_user_list.2.donut_set.all %}
           <img src="{% static 'donuts/images/donut.svg' %}" width="25"></img>
           {% endfor %}
-        </a>
+        </div>
+        {% for user in best_user_list %}
+        {% if forloop.counter > 3 %}
+        <div class="list-group-item">
+          <p class="list-group-item-text">{{ forloop.counter }}e : {{ user.first_name }} avec {{ user.donut_set.all.count }} donuts</p>
+        </div>
+        {% endif %}
+        {% endfor %}
       </div>
       {% endif %}
     </div>
     <div class="col-xs-6 col-md-4">
-      <div class="page-header">
-        <h1>Derniers donuts :</h1>
-      </div>
+      <h3>Derniers donuts :</h3>
       {% if latest_donut_list %}
-      <ul class="list-group">
+      <div class="list-group">
         {% for donut in latest_donut_list %}
-        <li class="list-group-item">
+        <a class="list-group-item" role="button" data-toggle="collapse" href="#latestCollapse{{ donut.id }}" aria-expanded="false" aria-controls="latestCollapse{{ donut.user.id }}">
           <span class="label label-default">{{ donut.pub_date|date:"d / m / Y" }}</span>
-          {{ donut.user.first_name }} ({{ donut.user.donut_set.all.count}}) - {{ donut.donut_text }}
-        </li>
+          {{ donut.user.first_name }}
+          <div class="collapse" id="latestCollapse{{ donut.id }}">
+            {{ donut.donut_text }}
+          </div>
+        </a>
         {% endfor %}
-      </ul>
+      </div>
       {% else %}
       <p>Pas de nouveaux donuts...</p>
       {% endif %}
+      </div>
     </div>
-  </div>
 
-</div>
+  </div>
