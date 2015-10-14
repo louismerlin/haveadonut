@@ -12,6 +12,7 @@
   </div>
   <div class="row">
     <div class="col-xs-12 col-md-8">
+      <img src="{% static 'donuts/images/cat.jpg' %}" width="100"></img>
       {% if best_user_list %}
       <div class="list-group">
         <div class="list-group-item">
@@ -34,22 +35,24 @@
         </div>
         {% for user in best_user_list %}
         {% if forloop.counter > 3 %}
+        {% if user.donut_set.all.count != 0 %}
         <div class="list-group-item">
           <p class="list-group-item-text">{{ forloop.counter }}e : {{ user.first_name }} avec {{ user.donut_set.all.count }} donuts</p>
         </div>
+        {% endif %}
         {% endif %}
         {% endfor %}
       </div>
       {% endif %}
     </div>
-    <div class="col-xs-6 col-md-4">
+    <div class="col-xs-12 col-md-4">
       <h3>Derniers donuts :</h3>
       {% if latest_donut_list %}
       <div class="list-group">
         {% for donut in latest_donut_list %}
         <a class="list-group-item" role="button" data-toggle="collapse" href="#latestCollapse{{ donut.id }}" aria-expanded="false" aria-controls="latestCollapse{{ donut.user.id }}">
           <span class="label label-default">{{ donut.pub_date|date:"d / m / Y" }}</span>
-          {{ donut.user.first_name }}
+          {{ donut.chat.first_name }}
           <div class="collapse" id="latestCollapse{{ donut.id }}">
             {{ donut.donut_text }}
           </div>
